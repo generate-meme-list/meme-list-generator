@@ -1,5 +1,7 @@
+import axios from 'axios'
 import React, {Component} from 'react'
 import './styles.css'
+import MemeImage from './MemeImage'
 
 // main app
     // loads a meme image from list of memes images
@@ -18,13 +20,32 @@ class App extends Component {
     constructor() {
         super()
         this.state = {
-            test: 'helloWorld'
+            loading: false,
+            memeObjects: []
         }
     }
 
+    componentDidMount() {
+        this.setState({loading: true})
+        axios.get('https://api.imgflip.com/get_memes')
+            .then((response => {
+                this.setState({
+                    loading: false,
+                    // array of meme objects
+                        // each object has id, name, and url property
+                    memeObjects: response.data.data.memes
+                })
+            }))
+        
+    }
+
     render() {
+        const images = this.state.loading ? '' : <MemeImage props={this.state.memeObjects} />
+
         return (
-            <h1>{this.state.test}</h1>
+            <div>
+                {images}
+            </div>
         )
     }
 }
