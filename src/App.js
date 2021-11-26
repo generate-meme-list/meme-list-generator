@@ -2,6 +2,8 @@ import axios from 'axios'
 import React, {Component} from 'react'
 import './styles.css'
 import MemeImage from './MemeImage'
+import MemesMade from './MemesMade'
+import TextInputs from './TextInputs'
 
 // main app
     // loads a meme image from list of memes images
@@ -21,8 +23,26 @@ class App extends Component {
         super()
         this.state = {
             loading: false,
-            memeObjects: []
+            memeObjects: [],
+            currentMeme: {},
+            memesMade: [
+                {
+                    imgUrl: 'https://i.imgflip.com/30b1gx.jpg',
+                    topText: 'this is the top text',
+                    bottomText: 'and the bottom text is here',
+                    id: '181913649'
+                },
+                {
+                    imgUrl: 'https://i.imgflip.com/1g8my4.jpg',
+                    topText: 'one option',
+                    bottomText: 'the other option',
+                    id: '87743020'
+                }
+            ],
         }
+
+        this.randomMeme = this.randomMeme.bind(this)
+        this.newMeme = this.newMeme.bind(this)
     }
 
     componentDidMount() {
@@ -33,21 +53,49 @@ class App extends Component {
                     loading: false,
                     // array of meme objects
                         // each object has id, name, and url property
-                    memeObjects: response.data.data.memes
+                    memeObjects: response.data.data.memes,
+                    currentMeme: response.data.data.memes[Math.floor(Math.random() * (response.data.data.memes.length - 0 + 1) + 0)]
                 })
             }))
         
     }
 
+    newMeme(event) {
+        event.preventDefault()
+        const newMeme = {
+            imgUrl: this.state.currentMeme.url,
+            topText: document.meme.top.value,
+            bottomText: document.meme.bottom.value,
+            id: this.state.currentMeme.id
+        }
+        // clear inputs
+        document.meme.top.value = ''
+        document.meme.bottom.value = ''
+        // set state with new memeObject
+        this.setState(prevState => ({memesMade: [...prevState.memesMade, newMeme]}))
+        // get a new image
+        this.randomMeme(event)
+
+    }
+
+    randomMeme(event) {
+        event.preventDefault()
+        this.setState({currentMeme: this.state.memeObjects[Math.floor(Math.random() * (this.state.memeObjects.length - 0 + 1) + 0)]})
+    }
+
     render() {
-        const images = this.state.loading ? '' : <MemeImage props={this.state.memeObjects} />
+        const randomImage = this.state.loading ? '' : <MemeImage props={this.state} />
 
         return (
-            <div>
-                {images}
+            <div id='meme-container'>
+                <h1>Create a Meme</h1>
+                <button onClick={this.randomMeme}>Refresh Meme Image</button>
+                {randomImage}
+                <TextInputs onSubmit={this.newMeme} />
+                <MemesMade props={this.state.memesMade} />
             </div>
         )
     }
 }
 
-export default App
+export default App 
