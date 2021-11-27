@@ -23,6 +23,8 @@ class App extends Component {
         super()
         this.state = {
             loading: false,
+            topText: '',
+            bottomText: '',
             memeObjects: [],
             currentMeme: {},
             memesMade: [
@@ -41,6 +43,7 @@ class App extends Component {
             ],
         }
 
+        this.handleChange = this.handleChange.bind(this)
         this.randomMeme = this.randomMeme.bind(this)
         this.newMeme = this.newMeme.bind(this)
     }
@@ -60,17 +63,27 @@ class App extends Component {
         
     }
 
+    handleChange(event) {
+        console.log(event.target)
+        const {name, value} = event.target
+        this.setState({
+            [name]: value
+        })
+    }
+
     newMeme(event) {
         event.preventDefault()
         const newMeme = {
             imgUrl: this.state.currentMeme.url,
-            topText: document.meme.top.value,
-            bottomText: document.meme.bottom.value,
+            topText: this.state.topText,
+            bottomText: this.state.bottomText,
             id: this.state.currentMeme.id
         }
         // clear inputs
-        document.meme.top.value = ''
-        document.meme.bottom.value = ''
+        this.setState({
+            topText: '',
+            bottomText: ''
+        })
         // set state with new memeObject
         this.setState(prevState => ({memesMade: [...prevState.memesMade, newMeme]}))
         // get a new image
@@ -91,7 +104,7 @@ class App extends Component {
                 <h1>Create a Meme</h1>
                 <button onClick={this.randomMeme}>Refresh Meme Image</button>
                 {randomImage}
-                <TextInputs onSubmit={this.newMeme} />
+                <TextInputs onChange={this.handleChange} onSubmit={this.newMeme} topText={this.state.topText} bottomText={this.state.bottomText}/>
                 <MemesMade props={this.state.memesMade} />
             </div>
         )

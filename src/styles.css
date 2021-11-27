@@ -8,3 +8,6 @@ img {
     align-items: center;
 
 }
+.meme img {
+    height: 200px;
+}
