@@ -64,7 +64,6 @@ class App extends Component {
     }
 
     handleChange(event) {
-        console.log(event.target)
         const {name, value} = event.target
         this.setState({
             [name]: value
@@ -80,6 +79,9 @@ class App extends Component {
             id: this.state.currentMeme.id
         }
         // clear inputs
+        document.meme.bottomText.value = ''
+        document.meme.topText.value = ''
+        // clear state for inputs
         this.setState({
             topText: '',
             bottomText: ''
