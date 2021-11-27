@@ -8,7 +8,11 @@ class Meme extends React.Component {
 
     render() {
         return (
-            <h1>a meme</h1>
+            <div className='meme' id={this.props.props.id}>
+                <h1>{this.props.props.topText}</h1>
+                <img src={this.props.props.imgUrl}></img>
+                <h1>{this.props.props.bottomText}</h1>
+            </div>
         )
     }
 }
