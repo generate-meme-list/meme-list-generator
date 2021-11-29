@@ -64,11 +64,34 @@ class App extends Component {
     }
 
     handleChange(event) {
-        console.log(event.target)
         const {name, value} = event.target
         this.setState({
             [name]: value
         })
+    }
+
+    handleUpdate(event) {
+        event.preventDefault()
+        const idToUpdate = event.target.parentElement.parentElement.id
+        const {topText, bottomText} = event.target
+        let newTop = topText.value
+        let newBottom = bottomText.value
+        if (newTop === '') {
+            newTop = topText.placeholder
+        }
+        if (newBottom === '') {
+            newBottom = bottomText.placeholder
+        }
+        console.dir(newTop)
+        console.log(newBottom)
+          
+        // this.setState((prevState) => {
+        //     const index = prevState.memesMade.findIndex(index => index.id === idToUpdate)
+        //     prevState.memesMade[index].topText = topText
+        //     return {
+        //         prevState
+        //     }
+        // })
     }
 
     newMeme(event) {
@@ -84,6 +107,8 @@ class App extends Component {
             topText: '',
             bottomText: ''
         })
+        document.meme.topText.value = ''
+        document.meme.bottomText.value = ''
         // set state with new memeObject
         this.setState(prevState => ({memesMade: [...prevState.memesMade, newMeme]}))
         // get a new image
@@ -105,7 +130,7 @@ class App extends Component {
                 <button onClick={this.randomMeme}>Refresh Meme Image</button>
                 {randomImage}
                 <TextInputs onChange={this.handleChange} onSubmit={this.newMeme} topText={this.state.topText} bottomText={this.state.bottomText}/>
-                <MemesMade props={this.state.memesMade} />
+                <MemesMade onSubmit={this.handleUpdate} onChange={this.handleChange} props={this.state.memesMade} />
             </div>
         )
     }
