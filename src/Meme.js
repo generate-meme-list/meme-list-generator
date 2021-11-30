@@ -29,6 +29,7 @@ class Meme extends React.Component {
     editMeme(event) {
         event.preventDefault()
         const keyId = event.target.parentElement.id
+        const editButton = event.target
         const topText = this.props.props.topText
         const bottomText = this.props.props.bottomText
         this.setState(this.props.props)
@@ -41,19 +42,15 @@ class Meme extends React.Component {
         
         // document.body.insertBefore(newDiv, currentDiv);
         const form = document.createElement('div')
-        form.id = 'divNewForm'
+        form.id = {keyId}
+
 
         event.target.parentElement.replaceChild(form, event.target)
-        render(newForm, document.getElementById('divNewForm'))
+        render(newForm, document.getElementById({keyId}))
     }
 
 
 
-    // <form name='meme' onSubmit={this.props.onSubmit} >
-    //     <input htmlFor='meme' name='topText' placeholder='Top Text' onChange={this.props.onChange}></input>
-    //     <input htmlFor='meme' name='bottomText' placeholder='Bottom Text' onChange={this.props.onChange}></input>
-    //     <button>Create Meme</button>
-    // </form>
 
     render() {
         return (
@@ -62,7 +59,7 @@ class Meme extends React.Component {
                 <img src={this.state.imgUrl}></img>
                 <h1>{this.state.bottomText}</h1>
                 <button onClick={this.editMeme}>Edit</button>
-                <button>Delete</button>
+                <button onClick={this.props.deleteMeme}>Delete</button>
             </div>
         )
     }
