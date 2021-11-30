@@ -8,7 +8,14 @@ class MemesMade extends React.Component {
     }
 
     render() {
-        const madeMeme = this.props.props.map(each => <Meme onSubmit={this.props.onSubmit} onChange={this.props.onChange} key={each.id} props={each} />)
+        const madeMeme = this.props.props.map(each => 
+            <Meme 
+                editMeme={this.props.editMeme} 
+                deleteMeme={this.props.deleteMeme} 
+                onSubmit={this.props.onSubmit} 
+                onChange={this.props.onChange} 
+                key={each.id} 
+                props={each} />)
         return (
             <div>
                 <h1>list of memes</h1>

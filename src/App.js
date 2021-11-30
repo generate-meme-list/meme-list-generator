@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React, {Component} from 'react'
+import ReactDOM, { render } from 'react-dom'
 import './styles.css'
 import MemeImage from './MemeImage'
 import MemesMade from './MemesMade'
@@ -40,9 +41,13 @@ class App extends Component {
                     bottomText: 'the other option',
                     id: '87743020'
                 }
-            ],
+            ]
         }
 
+        // this.handleEditChange = this.handleEditChange.bind(this)
+        // this.editMeme = this.editMeme.bind(this)
+        this.deleteMeme = this.deleteMeme.bind(this)
+        this.handleUpdate = this.handleUpdate.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.randomMeme = this.randomMeme.bind(this)
         this.newMeme = this.newMeme.bind(this)
@@ -61,6 +66,21 @@ class App extends Component {
                 })
             }))
         
+    }
+
+    deleteMeme(event) {
+        event.preventDefault()
+        // get the id for the meme
+        const memeId = event.target.parentElement.id
+        // find the index and splice out the one object from the array
+        // return the rest of the meme array
+        this.setState((prevState) => {
+            const index = prevState.memesMade.findIndex(index => index.id === memeId)
+            const memes = prevState.memesMade
+            console.log(memes[index])
+            memes.splice(index, 1)
+            return {memesMade: memes}
+        })
     }
 
     handleChange(event) {
@@ -84,15 +104,68 @@ class App extends Component {
         }
         console.dir(newTop)
         console.log(newBottom)
-          
-        // this.setState((prevState) => {
-        //     const index = prevState.memesMade.findIndex(index => index.id === idToUpdate)
-        //     prevState.memesMade[index].topText = topText
-        //     return {
-        //         prevState
-        //     }
-        // })
+        // update state and return the change in the array of memes
+        this.setState((prevState) => {
+            const index = prevState.memesMade.findIndex(index => index.id === idToUpdate)
+            prevState.memesMade[index].topText = newTop
+            prevState.memesMade[index].bottomText = newBottom
+            console.log(prevState.memesMade[index])
+            return {
+                memesMade: prevState.memesMade
+            }
+        })
+        // remove form and add an edit button
+        // const editButton = document.createElement('button')
+        // editButton.textContent = 'Edit'
+        // editButton.onclick = 'editMeme'
+        // console.log(editButton)
+        // // event.target.parentElement.replaceChild(editButton, event.target)
+        // console.dir(editButton)
+        // ReactDOM.unmountComponentAtNode(document.getElementById(idToUpdate))
+        
     }
+
+    // might need to move edit meme function to parent element.
+
+    // handleEditChange(event) {
+    //     event.preventDefault()
+    //     const memeId = event.target.parentElement.parentElement.parentElement.id
+    //     const index = this.state.memesMade.findIndex(index => index.id === memeId)
+    //     const meme = this.state.memesMade[index]
+
+    //     this.setState(prevState => {
+            
+
+    //         return {
+    //             memesMade: updatedMemes
+    //         }
+    //     })
+
+    //     const {name, value} = event.target
+    //     this.setState({
+    //         [name]: value
+    //     })
+    // }
+
+    // editMeme(event) {
+    //     event.preventDefault() 
+    //     const memeId = event.target.parentElement.id
+    //     const index = this.state.memesMade.findIndex(index => index.id === memeId)
+    //     const meme = this.state.memesMade[index]
+    //     console.log(meme)
+    //     const newForm = 
+    //         <form onSubmit={this.props.onSubmit}>
+    //             <input onChange={this.handleEditChange} htmlFor='updateMeme' placeholder={meme.topText} name='topText'></input>
+    //             <input onChange={this.handleEditChange} htmlFor='updateMeme' placeholder={meme.bottomText} name='bottomText'></input>
+    //             <button>Update Meme</button>
+    //         </form>
+
+    //     const formWrap = document.createElement('div')
+    //     formWrap.id = `edit-${memeId}`
+        
+    //     event.target.parentElement.replaceChild(formWrap, event.target)
+    //     render(newForm, document.getElementById(`edit-${memeId}`))
+    // }
 
     newMeme(event) {
         event.preventDefault()
@@ -133,7 +206,7 @@ class App extends Component {
                 <button onClick={this.randomMeme}>Refresh Meme Image</button>
                 {randomImage}
                 <TextInputs onChange={this.handleChange} onSubmit={this.newMeme} topText={this.state.topText} bottomText={this.state.bottomText}/>
-                <MemesMade onSubmit={this.handleUpdate} onChange={this.handleChange} props={this.state.memesMade} />
+                <MemesMade editMeme={this.editMeme} deleteMeme={this.deleteMeme} onSubmit={this.handleUpdate} onChange={this.handleChange} props={this.state.memesMade} />
             </div>
         )
     }
