@@ -18,7 +18,7 @@ class MemesMade extends React.Component {
                 props={each} />)
         return (
             <div>
-                <h1>Created Memes</h1>
+                <h1>list of memes</h1>
                 {madeMeme}
             </div>
         )
