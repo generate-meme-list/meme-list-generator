@@ -7,18 +7,27 @@ img {
     flex-direction: column;
     align-items: center;
     position: relative;
-
 }
 .meme img {
-    height: 200px;
+    height: 300px;
 }
 .topText {
     position: absolute;
     z-index: 0;
     vertical-align: text-top;
-}
+    background-color: rgba(255, 255, 255, 0.6);}
 .bottomText {
     position: relative;
     z-index: 0;
     margin-top: -15%;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+#meme-container > form {
+    margin-top: 8%;
+}
+.memeImage {
+    text-align: center;
+}
+.meme {
+    font-size: 10px;
 }
