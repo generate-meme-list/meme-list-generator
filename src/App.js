@@ -129,7 +129,7 @@ class App extends Component {
         const index = this.state.memesMade.findIndex(index => index.id === memeId)
         const newForm = 
             <form onSubmit={this.handleUpdate}>
-                <input onChange='handleChangeUpdate' htmlFor='updateMeme' placeholder={this.state.memesMade[index].topText} name='topText'></input>
+                <input onChange={this.handleEditChange} htmlFor='updateMeme' placeholder={this.state.memesMade[index].topText} name='topText'></input>
                 <input onChange={this.handleEditChange} htmlFor='updateMeme' placeholder={this.state.memesMade[index].bottomText} name='bottomText'></input>
                 <button>Update Meme</button>
             </form>
